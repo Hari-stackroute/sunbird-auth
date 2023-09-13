@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import org.jboss.logging.Logger;
 import org.keycloak.component.ComponentModel;
@@ -84,9 +85,9 @@ public class UserAdapter extends AbstractUserAdapterFederatedStorage {
   }
   
   @Override
-  public List<String> getAttribute(String name) {
+  public Stream<String> getAttributeStream(String name) {
      List<String> list = getFederatedStorage().getAttributes(realm, keycloakId).get(name);
-     return list;
+     return list.stream();
   }
   
   @Override

@@ -1,6 +1,7 @@
 package org.sunbird.sms.msg91;
 
 import com.amazonaws.util.StringUtils;
+import jakarta.ws.rs.HttpMethod;
 import org.apache.http.HttpEntity;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -15,7 +16,6 @@ import org.sunbird.sms.SmsConfigurationConstants;
 import org.sunbird.sms.provider.ISmsProvider;
 import org.sunbird.utils.JsonUtil;
 
-import javax.ws.rs.HttpMethod;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;

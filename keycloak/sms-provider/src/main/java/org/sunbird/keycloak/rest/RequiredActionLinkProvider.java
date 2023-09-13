@@ -5,14 +5,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.UriBuilder;
+
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriBuilder;
+import jakarta.ws.rs.core.Response.Status;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.logging.Logger;
 import org.keycloak.authentication.actiontoken.execactions.ExecuteActionsActionToken;
@@ -70,7 +71,7 @@ public class RequiredActionLinkProvider implements RealmResourceProvider {
     int expiration = Time.currentTime() + expirationInSecs;
 
     List<String> requiredActionList = getRequiredActionListOrError(actionName);
-
+    Map<String, Object> response = new HashMap<>();
     try {
       ExecuteActionsActionToken token = new ExecuteActionsActionToken(user.getId(), expiration,
           requiredActionList, redirectUri, clientId);
@@ -85,11 +86,12 @@ public class RequiredActionLinkProvider implements RealmResourceProvider {
           token.serialize(session, session.getContext().getRealm(), session.getContext().getUri()));
       String link = builder.build(session.getContext().getRealm().getName()).toString();
 
-      Map<String, Object> response = new HashMap<>();
+
       response.put(Constants.LINK, link);
       return Response.ok(response).build();
     } catch (Exception e) {
-      return ErrorResponse.error(Constants.ERROR_CREATE_LINK, Status.INTERNAL_SERVER_ERROR);
+      //response.put(Constants.ERROR_CREATE_LINK, Status.INTERNAL_SERVER_ERROR);
+      throw new WebApplicationException(ErrorResponse.error(Constants.ERROR_CREATE_LINK, Status.INTERNAL_SERVER_ERROR));
     }
   }
 
@@ -163,7 +165,7 @@ public class RequiredActionLinkProvider implements RealmResourceProvider {
     logger.debug("RestResourceProvider: checkRealmAdminAccess called");
     
     AuthResult authResult =
-        new AppAuthManager().authenticateBearerToken(session, session.getContext().getRealm());
+        new AppAuthManager().authenticateIdentityCookie(session, session.getContext().getRealm());
     
     if (authResult == null) {
       throw new WebApplicationException(
@@ -178,8 +180,7 @@ public class RequiredActionLinkProvider implements RealmResourceProvider {
   private void validateRedirectUri(String redirectUri, ClientModel client) {
     logger.debug("RestResourceProvider: validateRedirectUri called");
     if (StringUtils.isNotBlank(redirectUri)) {
-      String redirect = RedirectUtils.verifyRedirectUri(session.getContext().getUri(), redirectUri,
-          session.getContext().getRealm(), client);
+      String redirect = RedirectUtils.verifyRedirectUri(session, redirectUri, client);
       if (redirect == null) {
         throw new WebApplicationException(
             ErrorResponse.error(MessageFormat.format(Constants.ERROR_INVALID_PARAMETER_VALUE,

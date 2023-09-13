@@ -118,6 +118,10 @@
           <artifactId>bcpkix-jdk15on</artifactId>
           <groupId>org.bouncycastle</groupId>
         </exclusion>
+        <exclusion>
+          <artifactId>keycloak-common</artifactId>
+          <groupId>org.keycloak</groupId>
+        </exclusion>
       </exclusions>
     </dependency>
     <dependency>
@@ -126,10 +130,6 @@
       <version>4.5</version>
       <scope>provided</scope>
       <exclusions>
-        <exclusion>
-          <artifactId>httpcore</artifactId>
-          <groupId>org.apache.httpcomponents</groupId>
-        </exclusion>
         <exclusion>
           <artifactId>commons-codec</artifactId>
           <groupId>commons-codec</groupId>
@@ -145,8 +145,9 @@
   </dependencies>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
   </properties>
 </project>
 
