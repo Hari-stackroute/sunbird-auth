@@ -23,6 +23,7 @@ public class UserService {
   }
 
   public List<User> getByUsername(String username) {
+    logger.info("UserService: getByUsername called = " + username);
     List<User> users = null;
     String numberRegex = "\\d+";
     String emailRegex = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
@@ -47,6 +48,7 @@ public class UserService {
   }
 
   public List<User> getByKey(String key, String searchValue) {
+    logger.info("UserService: getByKey starts with key = " + key + " value = " + searchValue);
     return UserSearchService.getUserByKey(key, searchValue);
   }
 

@@ -47,7 +47,7 @@ public class UserServiceProvider
 
   @Override
   public UserModel getUserByUsername(String username, RealmModel realm) {
-    logger.info("UserServiceProvider: getUserByUsername called");
+    logger.info("UserServiceProvider: getUserByUsername called = " + username);
     List<User> users = userService.getByUsername(username);
     if (users != null && users.size() == 1) {
       return new UserAdapter(session, realm, model, users.get(0));
@@ -61,7 +61,7 @@ public class UserServiceProvider
 
   @Override
   public UserModel getUserByEmail(String email, RealmModel realm) {
-    logger.info("UserServiceProvider: getUserByEmail called");
+    logger.info("UserServiceProvider: getUserByEmail called = " + email);
     return getUserByUsername(email, realm);
   }
 
@@ -122,7 +122,7 @@ public class UserServiceProvider
   @Override
   public List<UserModel> searchForUserByUserAttribute(String attrName, String attrValue,
       RealmModel realm) {
-    logger.info("UserServiceProvider: searchForUserByUserAttribute called");
+    logger.info("UserServiceProvider: searchForUserByUserAttribute called with attrName: " +attrName+ " attrValue: " + attrValue);
     if (Constants.PHONE.equalsIgnoreCase(attrName)) {
       return userService.getByKey(attrName, attrValue).stream()
           .map(user -> new UserAdapter(session, realm, model, user)).collect(Collectors.toList());

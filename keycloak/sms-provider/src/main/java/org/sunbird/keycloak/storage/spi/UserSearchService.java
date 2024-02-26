@@ -26,6 +26,7 @@ public class UserSearchService {
 
   @SuppressWarnings({"unchecked"})
   public static List<User> getUserByKey(String key, String value) {
+    logger.info("UserSearchService: getUserByKey method starts with key = " + key + " value = " +value);
     Map<String, Object> userRequest = new HashMap<>();
     Map<String, Object> request = new HashMap<>();
     request.put("key",key.toLowerCase());
@@ -35,7 +36,7 @@ public class UserSearchService {
     String userLookupUrl = System.getenv("sunbird_user_service_base_url")+"/private/user/v1/lookup";
     Map<String, Object> resMap =
       post(userRequest, userLookupUrl, System.getenv(Constants.SUNBIRD_LMS_AUTHORIZATION));
-    logger.info("UserSearchService:getUserByKey responseMap "+resMap);
+    logger.info("UserSearchService:getUserByKey responseMap = "+resMap);
     Map<String, Object> result = null;
     List<Map<String, Object>> content = null;
     if (null != resMap) {
@@ -67,7 +68,7 @@ public class UserSearchService {
     user.setPhone((String) userMap.get(Constants.PHONE));
     user.setUsername((String) userMap.get("userName"));
     user.setCountryCode((String) userMap.get("countryCode"));
-    if ( null != userMap.get("status") && ((Integer)userMap.get("status")) == 0) {
+    if ( null != userMap.get("status") && ((Integer)userMap.get("status") == 0 || (Integer)userMap.get("status") == 2)) {
       user.setEnabled(false);
     } else {
       user.setEnabled(true);

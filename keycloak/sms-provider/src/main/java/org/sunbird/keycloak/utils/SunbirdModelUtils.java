@@ -61,10 +61,12 @@ public class SunbirdModelUtils {
         }
         return userModels.get(0);
       } else {
+          logger.info("SunbirdModelUtils@getUser userModels is empty, calling KeycloakModelUtils.findUserByNameOrEmail username value : " +username);
         return KeycloakModelUtils.findUserByNameOrEmail(context.getSession(), context.getRealm(),
             username);
       }
     } else {
+        logger.info("SunbirdModelUtils@getUser username didn't match with numberRegex, calling KeycloakModelUtils.findUserByNameOrEmail username value : " +username);
       return KeycloakModelUtils.findUserByNameOrEmail(context.getSession(), context.getRealm(),
           username);
     }

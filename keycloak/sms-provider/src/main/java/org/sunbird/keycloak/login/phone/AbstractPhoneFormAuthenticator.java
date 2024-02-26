@@ -40,7 +40,8 @@ public abstract class AbstractPhoneFormAuthenticator extends AbstractUsernameFor
   public boolean validateUserAndPassword(AuthenticationFlowContext context,
       MultivaluedMap<String, String> inputData) {
     String username = inputData.getFirst(AuthenticationManager.FORM_USERNAME);
-    logger.debug("AbstractPhoneFormAuthenticator@validateUserAndPassword - Username -" + username);
+    //logger.debug("AbstractPhoneFormAuthenticator@validateUserAndPassword - Username -" + username);
+    logger.info("AbstractPhoneFormAuthenticator@validateUserAndPassword - Username -" + username);
 
     if (username == null) {
       context.getEvent().error(Errors.USER_NOT_FOUND);
@@ -58,7 +59,7 @@ public abstract class AbstractPhoneFormAuthenticator extends AbstractUsernameFor
 
     UserModel user = null;
     try {
-      
+      logger.info("AbstractPhoneFormAuthenticator@validateUserAndPassword calling SunbirdModelUtils.getUserByNameEmailOrPhone - Username -" + username);
       user = SunbirdModelUtils.getUserByNameEmailOrPhone(context, username);
       
     } catch (ModelDuplicateException mde) {
@@ -82,15 +83,21 @@ public abstract class AbstractPhoneFormAuthenticator extends AbstractUsernameFor
       return false;
     }
 
+    logger.info("AbstractPhoneFormAuthenticator@validateUserAndPassword calling AbstractUsernameFormAuthenticator@invalidUser for username: " + username);
     if (invalidUser(context, user)) {
+      logger.info("AbstractPhoneFormAuthenticator@validateUserAndPassword invalidUser returns false for username: " + username);
       return false;
     }
 
+    logger.info("AbstractPhoneFormAuthenticator@validateUserAndPassword calling AbstractUsernameFormAuthenticator@validatePassword for username: " + username);
     if (!validatePassword(context, user, inputData)) {
+      logger.info("AbstractPhoneFormAuthenticator@validateUserAndPassword validatePassword returns false for username: " + username);
       return false;
     }
 
+    logger.info("AbstractPhoneFormAuthenticator@validateUserAndPassword calling AbstractUsernameFormAuthenticator@enabledUser for username: " + username);
     if (!enabledUser(context, user)) {
+      logger.info("AbstractPhoneFormAuthenticator@validateUserAndPassword enabledUser returns false for username: " + username);
       return false;
     }
 
@@ -103,6 +110,7 @@ public abstract class AbstractPhoneFormAuthenticator extends AbstractUsernameFor
       context.getAuthenticationSession().removeAuthNote(Details.REMEMBER_ME);
     }
     context.setUser(user);
+    logger.info("AbstractPhoneFormAuthenticator@validateUserAndPassword validated user with username:" + username);
     return true;
   }
   
