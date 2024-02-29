@@ -4,6 +4,22 @@ public class User {
 
   private String id;
   private String username;
+
+  @Override
+  public String toString() {
+    return "User{" +
+            "id='" + id + '\'' +
+            ", username='" + username + '\'' +
+            ", email='" + email + '\'' +
+            ", phone='" + phone + '\'' +
+            ", firstName='" + firstName + '\'' +
+            ", lastName='" + lastName + '\'' +
+            ", password='" + password + '\'' +
+            ", enabled=" + enabled +
+            ", countryCode='" + countryCode + '\'' +
+            '}';
+  }
+
   private String email;
   private String phone;
   private String firstName;

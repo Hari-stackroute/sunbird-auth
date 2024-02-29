@@ -19,6 +19,7 @@ public class UserService {
     if (null != users && !users.isEmpty()) {
       return users.get(0);
     }
+    logger.info("UserService:getById ends with new User");
     return new User();
   }
 

@@ -50,16 +50,20 @@ public class UserSearchService {
       if (!content.isEmpty()) {
         content.forEach(userMap -> {
           if (null != userMap) {
+            logger.info("UserSearchService:getUserByKey calling createUser: " + userMap.get(Constants.EMAIL));
             userList.add(createUser(userMap));
           }
         });
       }
+      logger.info("UserSearchService:getUserByKey method ends with userList of size: "+userList.size());
       return userList;
     }
+    logger.info("UserSearchService:getUserByKey method ends with emptylist");
     return Collections.emptyList();
   }
 
   private static User createUser(Map<String, Object> userMap) {
+    logger.info("UserSearchService: createUser method starts");
     User user = new User();
     user.setEmail((String) userMap.get(Constants.EMAIL));
     user.setFirstName((String) userMap.get("firstName"));
@@ -73,6 +77,7 @@ public class UserSearchService {
     } else {
       user.setEnabled(true);
     }
+    logger.info("UserSearchService: createUser method ends woth user deatils:"+user.toString());
     return user;
   }
 

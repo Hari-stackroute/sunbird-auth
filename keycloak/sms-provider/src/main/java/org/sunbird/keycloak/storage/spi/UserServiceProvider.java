@@ -127,6 +127,7 @@ public class UserServiceProvider
       return userService.getByKey(attrName, attrValue).stream()
           .map(user -> new UserAdapter(session, realm, model, user)).collect(Collectors.toList());
     }
+    logger.info("UserServiceProvider: searchForUserByUserAttribute ends with returing emptyList");
     return Collections.emptyList();
   }
 
